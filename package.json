@@ -1,0 +1,25 @@
+{
+  "name": "botwa",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "MRBOT",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "http": "^0.0.1-security",
+    "meme": "^0.1.2",
+    "meme-search": "^1.0.5",
+    "nodemon": "^2.0.20",
+    "qrcode": "^1.5.1",
+    "qrcode-terminal": "^0.12.0",
+    "socket.io": "^4.5.2",
+    "whatsapp-web.js": "^1.17.1"
+  },
+  "description": ""
+}
