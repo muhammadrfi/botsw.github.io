@@ -1,7 +1,7 @@
 const { Client, Location, List, Buttons, LocalAuth, MessageMedia} = require('whatsapp-web.js');
 const express = require('express');
 //const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode');
+const qrcode = require('qrcode-terminal');
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: { headless: true }});
@@ -13,25 +13,15 @@ const http = require('http');
 const { type } = require('os');
 
 
-const server = http.createServer(app);
-const io = socketIO(server);
 
- app.get('/', (req, res) => {
-    res.sendFile('index.html', {root : __dirname});
- });
-
-  server.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-  })
 client.initialize();
 
 client.on('loading_screen', (percent, message) => {
     console.log('LOADING SCREEN', percent, message);
 });
 
-client.on('qr', (qr) => {
-    // NOTE: This event will not be fired if a session is specified.
-    console.log('QR RECEIVED', qr);
+client.on('qr', qr => {
+    qrcode.generate(qr, {small: true});
 });
 
 client.on('authenticated', () => {
@@ -46,25 +36,6 @@ client.on('auth_failure', msg => {
 client.on('ready', () => {
     console.log('READY');
 });
-
-io.on('connection', function(socket){
-    socket.emit('message', 'connecting...');
-    console.log('connecting');
-
-    client.on('qr', (qr) => {
-        console.log('QR RECEIVED' , qr);
-    
-        qrcode.toDataURL(qr, (err, url) => {
-            socket.emit('qr', url);
-            socket.emit('message', 'qr code resived,scan')
-        });
-    });
-    client.on('ready', () => {
-        console.log('READY');
-        socket.emit('message', 'qr code resived,ready')
-    });
-});
-
 
 client.on('message', async msg => {
     console.log('MESSAGE RECEIVED', msg);
